@@ -56,6 +56,7 @@
 .gCalFlow .gcf-item-container-block {
     position: relative;
     overflow: hidden;
+    overflow-y: auto;
     height: 90%;
     background: black;
     color: white;
