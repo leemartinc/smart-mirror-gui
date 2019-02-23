@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1">
+
+    <title>Smart Mirror</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Abel|Gruppo|Josefin+Slab|Montserrat|Nixie+One|Open+Sans+Condensed:300|Poiret+One|Thasadith" rel="stylesheet">
+
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="/css/animate.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/css/animate.css" type="text/css" />
+    <link href="/css/jquery.gcal_flow.css" rel="stylesheet" type="text/css">
+
+
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.gcal_flow.js"></script>
+    <script type="text/javascript">
+        var $ = jQuery;
+        //e90l3qvsqqgm9krd2md28sicvlalcv4p@import.calendar.google.com
+        $(function() {
+            $('#gcf-simple').gCalFlow({
+                calid: 'e90l3qvsqqgm9krd2md28sicvlalcv4p@import.calendar.google.com'
+            });
+        });
+    </script>
+
+
+    <script>
+        document.onkeydown = function(e) {
+            switch (e.keyCode) {
+                case 37:
+                    //alert('left'); 
+                    selectedIndex--;
+                    rotateCarousel();
+                    break;
+                case 38:
+                    //alert('up'); 
+                    carouselHolder.classList.remove('animated', 'fadeOutDown');
+                    carouselHolder.classList.add('animated', 'fadeInUp');
+
+                    break;
+                case 39:
+                    //alert('right'); 
+                    selectedIndex++;
+                    rotateCarousel();
+                    break;
+                case 40:
+                    //alert('down'); 
+                    carouselHolder.classList.remove('animated', 'fadeInUp');
+                    carouselHolder.classList.add('animated', 'fadeOutDown');
+
+                    break;
+            }
+        };
+    </script>
+</head>
+
+<body onload="start()">
+    <!--Clock-->
+    <div style="font-size: 50%;">
+        <h2 id="time" style="margin: 0px;">TIME
+        </h2>
+        <p id="date" style="margin-top: -20px; letter-spacing: 2px; text-align: center;"> wed test</p>
+    </div>
+
+    <!--calendar-->
+    <div id="gcf-simple" style="text-align: left; font-size: 50%;">hiiiii
+    </div>
+    <br>
+
+    <!--Weather-->
+    <div class="fl-rt" style="width: 314px; font-size: 30%;">
+        <a class="weatherwidget-io" href="https://forecast7.com/en/40d71n74d01/new-york/?unit=us" data-label_1="NEW YORK" data-label_2="WEATHER" data-theme="dark">NEW YORK WEATHER</a>
+        <script>
+            ! function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (!d.getElementById(id)) {
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = 'https://weatherwidget.io/js/widget.min.js';
+                    fjs.parentNode.insertBefore(js, fjs);
+                }
+            }(document, 'script', 'weatherwidget-io-js');
+        </script>
+    </div>
+
+
+
+
+    <!--scrollable carousel-->
+    <div class="carouselHolder" id="the_carousel">
+        <div class="scene">
+            <div class="carousel">
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
+
+
+
+
+
+<script>
+    function start() {
+        startTime();
+        startDate();
+    }
+
+
+    function startTime() {
+        var today = new Date();
+        var hh = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+
+        var dd = "AM";
+        var h = hh;
+        if (h >= 12) {
+            h = hh - 12;
+            dd = "PM";
+        }
+        if (h == 0) {
+            h = 12;
+        }
+
+        m = checkTime(m);
+        //s = checkTime(s);
+        document.getElementById('time').innerHTML =
+            h + ":" + m;
+        var t = setTimeout(startTime, 500);
+    }
+
+    function checkTime(i) {
+        if (i < 10) {
+            i = "0" + i
+        }; // add zero in front of numbers < 10
+        return i;
+    }
+
+    function startDate() {
+        var d = new Date();
+        var montharray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var month = montharray[d.getMonth()];
+        var day = d.getDate();
+        var weekarray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        var week = weekarray[d.getDay()];
+        document.getElementById('date').innerHTML = week + ", " + month + " " + day;
+        var t = setTimeout(startDate, 500);
+    }
+
+</script>
+
+<script>
+    var carousel = document.querySelector('.carousel');
+    var carouselHolder = document.querySelector('.carouselHolder');
+jQuery(document).ready(function ($) {
+
+  $('#checkbox').change(function(){
+    setInterval(function () {
+        moveRight();
+    }, 3000);
+  });
+  
+	var slideCount = $('#slider ul li').length;
+	var slideWidth = $('#slider ul li').width();
+	var slideHeight = $('#slider ul li').height();
+	var sliderUlWidth = slideCount * slideWidth;
+	
+	$('#slider').css({ width: slideWidth, height: slideHeight });
+	
+	$('#slider ul').css({ width: sliderUlWidth, marginLeft: - slideWidth });
+	
+    $('#slider ul li:last-child').prependTo('#slider ul');
+
+    function moveLeft() {
+        $('#slider ul').animate({
+            left: + slideWidth
+        }, 200, function () {
+            $('#slider ul li:last-child').prependTo('#slider ul');
+            $('#slider ul').css('left', '');
+        });
+    };
+
+    function moveRight() {
+        $('#slider ul').animate({
+            left: - slideWidth
+        }, 500, function () {
+            $('#slider ul li:first-child').appendTo('#slider ul');
+            $('#slider ul').css('left', '');
+        });
+    };
+
+    $('a.control_prev').click(function () {
+        moveLeft();
+    });
+
+    $('a.control_next').click(function () {
+        moveRight();
+    });
+
+});   
+
+</script>
