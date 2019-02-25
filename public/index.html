@@ -16,9 +16,11 @@
     <link href="css/jquery.gcal_flow.css" rel="stylesheet" type="text/css">
 
 
+
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.gcal_flow.js"></script>
+    <script type="text/javascript" src="js/carousel.js"></script>
     <script type="text/javascript">
         var $ = jQuery;
         //e90l3qvsqqgm9krd2md28sicvlalcv4p@import.calendar.google.com
@@ -69,7 +71,7 @@
     </div>
 
     <!--calendar-->
-    <div id="gcf-simple" style="text-align: left; font-size: 50%;">hiiiii
+    <div id="gcf-simple" style="text-align: left;">hiiiii
     </div>
     <br>
 
@@ -97,36 +99,29 @@
         <div class="scene">
             <div class="carousel">
 
-                hii
+
+                <div id="slider">
+                    <a href="#" class="control_next"></a>
+                    <a href="#" class="control_prev">
+                    </a>
+                    <ul>
+                        <li>SLIDE 1</li>
+                        <li style="background: #aaa;">SLIDE 2</li>
+                        <li>SLIDE 3</li>
+                        <li style="background: #aaa;">SLIDE 4</li>
+                    </ul>
+                </div>
+
+                <!--
+                <div class="slider_option">
+                    <input type="checkbox" id="checkbox">
+                    <label for="checkbox">Autoplay Slider</label>
+                </div>
+    -->
+
+
 
             </div>
-        </div>
-
-        <!-- hiddent from user -->
-        <div class="carousel-options" style="display: none;">
-            <p>
-                <label>
-                    Cells
-                    <input class="cells-range" type="range" min="3" max="15" value="9" />
-                </label>
-            </p>
-            <p>
-                <button class="previous-button">Previous</button>
-                <button class="next-button">Next</button>
-            </p>
-
-            <p>
-                Orientation:
-                <label>
-                    <input type="radio" name="orientation" value="horizontal" checked />
-                    horizontal
-                </label>
-                <label>
-                    <input type="radio" name="orientation" value="vertical" />
-                    vertical
-                </label>
-            </p>
-
         </div>
     </div>
 
@@ -192,78 +187,52 @@
 <script>
     var carousel = document.querySelector('.carousel');
     var carouselHolder = document.querySelector('.carouselHolder');
-    var cells = carousel.querySelectorAll('.carousel__cell');
-    var cellCount; // cellCount set from cells-range input value
-    var selectedIndex = 0;
-    var cellWidth = carousel.offsetWidth;
-    var cellHeight = carousel.offsetHeight;
-    var isHorizontal = true;
-    var rotateFn = isHorizontal ? 'rotateY' : 'rotateX';
-    var radius, theta;
-    // console.log( cellWidth, cellHeight );
+    
+    jQuery(document).ready(function ($) {
 
-    function rotateCarousel() {
-        var angle = theta * selectedIndex * -1;
-        carousel.style.transform = 'translateZ(' + -radius + 'px) ' +
-            rotateFn + '(' + angle + 'deg)';
-    }
+  $('#checkbox').change(function(){
+    setInterval(function () {
+        moveRight();
+    }, 3000);
+  });
+  
+	var slideCount = $('#slider ul li').length;
+	var slideWidth = $('#slider ul li').width();
+	var slideHeight = $('#slider ul li').height();
+	var sliderUlWidth = slideCount * slideWidth;
+	
+	$('#slider').css({ width: slideWidth, height: slideHeight });
+	
+	$('#slider ul').css({ width: sliderUlWidth, marginLeft: - slideWidth });
+	
+    $('#slider ul li:last-child').prependTo('#slider ul');
 
-    var prevButton = document.querySelector('.previous-button');
-    prevButton.addEventListener('click', function() {
-        selectedIndex--;
-        rotateCarousel();
+    function moveLeft() {
+        $('#slider ul').animate({
+            left: + slideWidth
+        }, 500, function () {
+            $('#slider ul li:last-child').prependTo('#slider ul');
+            $('#slider ul').css('left', '');
+        });
+    };
+
+    function moveRight() {
+        $('#slider ul').animate({
+            left: - slideWidth
+        }, 500, function () {
+            $('#slider ul li:first-child').appendTo('#slider ul');
+            $('#slider ul').css('left', '');
+        });
+    };
+
+    $('a.control_prev').click(function () {
+        moveLeft();
     });
 
-    var nextButton = document.querySelector('.next-button');
-    nextButton.addEventListener('click', function() {
-        selectedIndex++;
-        rotateCarousel();
+    $('a.control_next').click(function () {
+        moveRight();
     });
 
-    var cellsRange = document.querySelector('.cells-range');
-    cellsRange.addEventListener('change', changeCarousel);
-    cellsRange.addEventListener('input', changeCarousel);
-
-
-
-    function changeCarousel() {
-        cellCount = 6;
-        theta = 360 / cellCount;
-        var cellSize = isHorizontal ? cellWidth : cellHeight;
-        radius = 730;
-        for (var i = 0; i < cells.length; i++) {
-            var cell = cells[i];
-            if (i < cellCount) {
-                // visible cell
-                cell.style.opacity = 1;
-                var cellAngle = theta * i;
-                cell.style.transform = rotateFn + '(' + cellAngle + 'deg) translateZ(' + radius + 'px)';
-            } else {
-                // hidden cell
-                cell.style.opacity = 0;
-                cell.style.transform = 'none';
-            }
-        }
-
-        rotateCarousel();
-    }
-
-    var orientationRadios = document.querySelectorAll('input[name="orientation"]');
-    (function() {
-        for (var i = 0; i < orientationRadios.length; i++) {
-            var radio = orientationRadios[i];
-            radio.addEventListener('change', onOrientationChange);
-        }
-    })();
-
-    function onOrientationChange() {
-        var checkedRadio = document.querySelector('input[name="orientation"]:checked');
-        isHorizontal = checkedRadio.value == 'horizontal';
-        rotateFn = isHorizontal ? 'rotateY' : 'rotateX';
-        changeCarousel();
-    }
-
-    // set initials
-    onOrientationChange();
+});    
 
 </script>

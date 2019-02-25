@@ -1,10 +1,11 @@
 .gCalFlow {
     position: absolute;
-    width: 600px;
-    height: 400px;
-
-    font-size: 90%;
+    width: 30vw;
+    height: 600px;
+    font-family: 'Thasadith', sans-serif;
+    font-size: 20px !important;
     overflow: hidden;
+    letter-spacing: 1px !important;
     text-decoration: none;
     padding-bottom: 0.5em;
 }
@@ -25,6 +26,9 @@
     padding: 5px 4px;
     background: black;
     color: white;
+    font-size: 26px !important;
+    font-weight: bold;
+    text-decoration: underline;
 }
 
 .gCalFlow .gcf-title-block {
@@ -43,7 +47,7 @@
 }
 
 .gCalFlow .gcf-last-update-block {
-    font-size: 76%;
+    font-size: 90%;
     text-align: right;
     bottom: 0;
     right: 0;
@@ -64,7 +68,6 @@
 
 .gCalFlow .gcf-item-block {
     position: relative;
-    overflow: hidden;
     padding: 2px;
     margin: 2px 0;
     background: black;
@@ -82,6 +85,7 @@
 .gCalFlow .gcf-item-date-block {
     font-size: 76%;
     background: black;
+    font-weight: bold;
     color: white;
 }
 
